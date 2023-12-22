@@ -1,25 +1,23 @@
 #include "mbed.h"
 #include "math.h"
+#include "vector.h"
 
-#define Pi acos(-1.0)
-#define GYROSCOPE_ADDRESS 0x68  //rep
-#define GYROSCOPE_DATA_REGISTER 0x43
+#define PI acos(-1.0)
+#define RADIUS 0.5
+#define dt 0.5
 
-// Converts angular velocity to linear velocity
-// float R = radius of circle
-// float A = angular velocity
-float conv (float R, float A)
-{
-    float V;
-    V = R*A; // Calculate linear velocity
-    return V;
+float calculateLinearVelocity(float omega){
+    float omega_mps, linearVelocity; 
+    // omega_mps = omega * (PI / 180); // IF the uints of angular velocity are in degrees/second
+    // linearVelocity = RADIUS * omega_mps;
+    linearVelocity = RADIUS * omega;
+
+    return linearVelocity;
 }
 
-// Calculate distance travelled
-// float V = linear velocity
-// float *d = distance travelled
-void dist (float V, float *d)
-{
-    *d += abs(V)*0.5;
-    return;
+void calculateLinearDistance(float linearVelocity, float *DISTANCE){
+    std::vector<flaot> instanteousDistance[40];
+    float instDist = abs(linearVelocity) * dt;  
+    instantaneousDistance.push_back(instDist);
+    *DISTANCE += instDistance;    
 }
