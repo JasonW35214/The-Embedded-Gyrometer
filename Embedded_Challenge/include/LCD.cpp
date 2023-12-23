@@ -18,8 +18,8 @@ void setup_foreground_layer(){
     lcd.SetTextColor(LCD_COLOR_LIGHTGREEN);
 }
 
-void clearData(int lineNumber){
-    lcd.ClearStringLine(LINE(lineNumber));
+void clearData(){
+    lcd.Clear(FOREGROUND);
 }
 void writeData(int displayBuffer, int fontSize, char *printData, int lineNumber){
     snprintf(display_buf[displayBuffer], fontSize, printData);
