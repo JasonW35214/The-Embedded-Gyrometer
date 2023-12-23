@@ -18,59 +18,36 @@
 #define BUTTON_PRESSED_FLAG 4
 
 #define SCALING_FACTOR (17.5f * 0.017453292519943295769236907684886f / 1000.0f)
-
-// EventFlags object declaration
-EventFlags flags;
-
-// DigitalIn button(PA_0);
-InterruptIn button(BUTTON1);
-
-DigitalOut led(LED1);
-
-//spi initialization
-SPI spi(PF_9, PF_8, PF_7, PC_1, use_gpio_ssel);
-uint8_t write_buf[32], read_buf[32];
-
-// spi callback function
-void spi_cb(int event) {
-    flags.set(SPI_FLAG);
-}
-
-void setSPIformat(){
-    //spi format and frequency
-    spi.format(8, 3);
-    spi.frequency(1'000'000);
-}
-
-void setupWriteRegister(){
-
-    // Write to control registers --> spi transfer
-    write_buf[0] = CTRL_REG1;
-    write_buf[1] = CTRL_REG1_CONFIG;
-    spi.transfer(write_buf, 2, read_buf, 2, spi_cb);
-    flags.wait_all(SPI_FLAG);
-
-    write_buf[0] = CTRL_REG4;
-    write_buf[1] = CTRL_REG4_CONFIG;
-    spi.transfer(write_buf, 2, read_buf, 2, spi_cb);
-    flags.wait_all(SPI_FLAG);
-
-    write_buf[0] = CTRL_REG3;
-    write_buf[1] = CTRL_REG3_CONFIG;
-    spi.transfer(write_buf, 2, read_buf, 2, spi_cb);
-    flags.wait_all(SPI_FLAG);
-
-    write_buf[1] = 0xFF;
-}
+#define FILTER_COEFFICIENT 0.1f // Adjust this value as needed. This is used as the coefficient for performing High/Low-Pass filter operations
 
 
-// button pushed callback function
-void button_pushed_cb(){
-    led = !led;
-    flags.set(BUTTON_PRESSED_FLAG);
-}
+typedef struct {
+    float x_raw;
+    float y_raw;
+    float z_raw;
+} GyroscopeRawData;
 
-// data ready callback function
-void data_cb() {
-    flags.set(DATA_READY_FLAG);
-}
+typedef struct {
+    float scaled_x;
+    float scaled_y;
+    float scaled_z;
+} GyroscopeScaled;
+
+typedef struct {
+    float filtered_x;
+    float filtered_y;
+    float filtered_z;
+} GyroscopeFiltered;
+
+
+void setupWriteRegister();
+void setSPIformat();
+void readData(GyroscopeRawData *rawData);
+void scaleData(GyroscopeRawData *rawData);
+void filterData(GyroscopeScaled *scaledData);
+
+
+void button_pushed_cb();
+void data_cb();
+void spi_cb();
+
