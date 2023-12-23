@@ -18,7 +18,7 @@ void setup_background_layer();
 //resets the foreground layer to black
 void setup_foreground_layer();
 //clears data on the LCD at a given line number
-void clearData(int lineNumber);
+void clearData();
 // writes data to the LCD Screen
 void writeData(int displayBuffer, int fontSize, char *printData, int lineNumber);
 // writes data to the LCD Screen with a variable
