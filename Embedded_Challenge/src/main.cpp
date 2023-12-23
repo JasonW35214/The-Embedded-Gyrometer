@@ -3,7 +3,7 @@
 /* Embedded Challenge Fall 2023 */
 
 #include "mbed.h"
-#include "challenge.h"
+#include "conversion.h"
 #include "gyroscope.h"
 #include "LCD.h"
 
