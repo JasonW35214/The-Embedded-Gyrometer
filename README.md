@@ -1,4 +1,5 @@
 # Embedded Gyrometer as Speedomoter
+Embedded Challenge Fall 2023 - "The Embedded Gyrometer"
 
 # Required Parts
 1. STM32F429 Discovery Board with built in gyroscope
